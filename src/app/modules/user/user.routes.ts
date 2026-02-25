@@ -15,4 +15,6 @@ router.post("/otp-verify", userController.otpVerify);
 
 router.post("/resend-otp", userController.resendOtp);
 
+router.post("/forget-password", userController.forgetPassword);
+
 export const userRoutes = router;
