@@ -14,5 +14,4 @@ export const redisOptions: RedisOptions = {
     keepAlive: 30000,
     maxRetriesPerRequest: null,
 };
-console.log(config.redis)
 export const redis = new Redis(redisOptions);

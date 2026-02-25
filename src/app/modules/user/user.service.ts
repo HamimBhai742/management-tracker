@@ -4,6 +4,8 @@ import bcrypt from "bcryptjs";
 import { prisma } from "../../utils/prisma";
 import { generateOTP } from "../../utils/generateOTP";
 import { otpQueueEmail } from "../../bullMQ/init";
+import { AppError } from "../../error";
+import httpStatus from "http-status";
 
 const registerUser = async (payload: Prisma.UserCreateInput) => {
   const { password } = payload;
@@ -20,19 +22,16 @@ const registerUser = async (payload: Prisma.UserCreateInput) => {
   await otpQueueEmail.add(
     "registrationOtp",
     {
-      userName: payload.name,
-      email: payload.email,
+      userName: user.name,
+      email: user.email,
       otpCode: otp,
-      subject: "Verify your email address",
+      subject: "Your Verification OTP",
     },
     {
-      jobId: `JobId-${payload.id}`,
-      attempts: 5,
+      jobId: `${user.id}-${Date.now()}`,
       removeOnComplete: true,
-      backoff: {
-        type: "fixed",
-        delay: 5000, // 5 seconds
-      },
+      attempts: 3,
+      backoff: { type: "fixed", delay: 5000 },
     },
   );
 
@@ -45,6 +44,72 @@ const registerUser = async (payload: Prisma.UserCreateInput) => {
   };
 };
 
+const otpVerify = async (email: string, otp: string) => {
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+  if (user.otp !== otp) {
+    throw new AppError(httpStatus.UNAUTHORIZED, "Invalid OTP");
+  }
+  if (user.otpExpires && user.otpExpires < new Date()) {
+    throw new AppError(httpStatus.UNAUTHORIZED, "OTP has expired");
+  }
+
+  await prisma.user.update({
+    where: { email },
+    data: {
+      isEmailVerified: true,
+      otp: null,
+      otpExpires: null,
+    },
+  });
+  return {
+    name: user.name,
+  };
+};
+
+const resendOtp = async (email: string) => {
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+  const otp = generateOTP();
+  const otpExpiry = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes from now
+  await prisma.user.update({
+    where: { email },
+    data: {
+      otp: otp,
+      otpExpires: otpExpiry,
+    },
+  });
+
+  await otpQueueEmail.add(
+    "registrationOtp",
+    {
+      userName: user.name,
+      email: user.email,
+      otpCode: otp,
+      subject: "Your Verification OTP",
+    },
+    {
+      jobId: `${user.id}-${Date.now()}`,
+      removeOnComplete: true,
+      attempts: 3,
+      backoff: { type: "fixed", delay: 5000 },
+    },
+  );
+
+  return {
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    status: user.status,
+  }
+};
+
 export const userService = {
   registerUser,
+  otpVerify,
+  resendOtp
 };

@@ -19,7 +19,6 @@ const adminData = {
   role: Role.ADMIN,
   isEmailVerified: true,
 };
-console.log(adminData)
 //create seed admin
 const seedAdmin = async () => {
   try {
@@ -39,7 +38,6 @@ const seedAdmin = async () => {
       await prisma.user.create({
         data: adminData,
       });
-      console.log(" Admin created successfully.");
     } else {
       console.log(" Admin already exists.");
       return;

@@ -25,7 +25,6 @@ export const checkAuth =
         token,
         config.jwt.access_secret as Secret,
       )) as IJwtPayload;
-      console.log(verifyUserToken);
       // Check user is exist
       const user = await prisma.user.findUnique({
         where: {

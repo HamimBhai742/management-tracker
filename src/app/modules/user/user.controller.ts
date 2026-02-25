@@ -15,4 +15,25 @@ const registerUser = catchAsyncFn(async (req: Request, res: Response) => {
   });
 });
 
-export const userController = { registerUser };
+const otpVerify = catchAsyncFn(async (req: Request, res: Response) => {
+  const user = await userService.otpVerify(req.body.email, req.body.otp);
+  sendResponse(res, {
+    success: true,
+    message: "User verified successfully",
+    statusCode: httpStatus.OK,
+    data: null,
+  });
+});
+
+const resendOtp = catchAsyncFn(async (req: Request, res: Response) => {
+  const user = await userService.resendOtp(req.body.email);
+
+  sendResponse(res, {
+    success: true,
+    message: "Otp sent successfully",
+    statusCode: httpStatus.OK,
+    data: user,
+  });
+});
+
+export const userController = { registerUser, otpVerify, resendOtp };

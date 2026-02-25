@@ -11,4 +11,8 @@ router.post(
   userController.registerUser,
 );
 
+router.post("/otp-verify", userController.otpVerify);
+
+router.post("/resend-otp", userController.resendOtp);
+
 export const userRoutes = router;

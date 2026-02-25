@@ -13,7 +13,6 @@ export const globalErrorHandler = (
   let statusCode = 500;
   let message = "Something went wrong!";
   let errorSource: Record<string, string> = {};
-  console.log(err, errorSource);
   // AppError
   if (err instanceof AppError) {
     statusCode = err.statusCode;
