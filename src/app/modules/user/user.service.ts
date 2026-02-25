@@ -105,11 +105,60 @@ const resendOtp = async (email: string) => {
     email: user.email,
     role: user.role,
     status: user.status,
+  };
+};
+
+const forgetPassword = async (email: string) => {
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
   }
+
+  if (!user.isEmailVerified) {
+    throw new AppError(httpStatus.UNAUTHORIZED, "User is not verified");
+  }
+
+  if (user.status !== "ACTIVE") {
+    throw new AppError(httpStatus.UNAUTHORIZED, `User is ${user.status}`);
+  }
+
+  const otp = generateOTP();
+  const otpExpiry = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes from now
+  await prisma.user.update({
+    where: { email },
+    data: {
+      otp: otp,
+      otpExpires: otpExpiry,
+    },
+  });
+
+  await otpQueueEmail.add(
+    "forgetPasswordOtp",
+    {
+      userName: user.name,
+      email: user.email,
+      otpCode: otp,
+      subject: "Your Verification OTP",
+    },
+    {
+      jobId: `${user.id}-${Date.now()}`,
+      removeOnComplete: true,
+      attempts: 3,
+      backoff: { type: "fixed", delay: 5000 },
+    },
+  );
+
+  return {
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    status: user.status,
+  };
 };
 
 export const userService = {
   registerUser,
   otpVerify,
-  resendOtp
+  resendOtp,
+  forgetPassword,
 };

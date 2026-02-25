@@ -4,6 +4,7 @@ import { userService } from "./user.service";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status";
 
+//register new user
 const registerUser = catchAsyncFn(async (req: Request, res: Response) => {
   const user = await userService.registerUser(req.body);
 
@@ -15,6 +16,7 @@ const registerUser = catchAsyncFn(async (req: Request, res: Response) => {
   });
 });
 
+//otp VERIFY
 const otpVerify = catchAsyncFn(async (req: Request, res: Response) => {
   const user = await userService.otpVerify(req.body.email, req.body.otp);
   sendResponse(res, {
@@ -25,6 +27,7 @@ const otpVerify = catchAsyncFn(async (req: Request, res: Response) => {
   });
 });
 
+//resend otp
 const resendOtp = catchAsyncFn(async (req: Request, res: Response) => {
   const user = await userService.resendOtp(req.body.email);
 
@@ -36,4 +39,20 @@ const resendOtp = catchAsyncFn(async (req: Request, res: Response) => {
   });
 });
 
-export const userController = { registerUser, otpVerify, resendOtp };
+//forget password
+const forgetPassword = catchAsyncFn(async (req: Request, res: Response) => {
+  const user = await userService.forgetPassword(req.body.email);
+  sendResponse(res, {
+    success: true,
+    message: "Otp sent successfully",
+    statusCode: httpStatus.OK,
+    data: user,
+  });
+});
+
+export const userController = {
+  registerUser,
+  otpVerify,
+  resendOtp,
+  forgetPassword,
+};
