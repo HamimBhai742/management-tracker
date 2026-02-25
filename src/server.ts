@@ -2,8 +2,7 @@ import { Server } from "http";
 import app from "./app";
 import config from "./config";
 import seedAdmin, { connectDB } from "./app/db";
-
-
+import "./app/bullMQ/init";
 
 const port = config.port || 5001;
 

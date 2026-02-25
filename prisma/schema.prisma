@@ -8,14 +8,15 @@ datasource db {
 }
 
 model User {
-  id              String    @id @default(uuid())
+  id              String     @id @default(uuid())
   name            String
-  email           String    @unique
+  email           String     @unique
   password        String
-  isEmailVerified Boolean   @default(false)
+  isEmailVerified Boolean    @default(false)
   otp             String?
   otpExpires      DateTime?
-  role            UserRole  @default(USER) // "USER" | "ADMIN"
+  role            UserRole   @default(USER) // "USER" | "ADMIN"
+  status          UserStatus  @default(ACTIVE)
 
   projects     Project[]
   learningLogs LearningLog[]
@@ -31,6 +32,12 @@ model User {
 enum UserRole {
   USER
   ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  BLOCKED
 }
 
 model Project {
