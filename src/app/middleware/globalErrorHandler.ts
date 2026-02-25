@@ -3,6 +3,7 @@ import { ZodError } from "zod";
 import { AppError } from "../error";
 import { Prisma } from "../../generated/prisma/client";
 
+
 export const globalErrorHandler = (
   err: any,
   req: Request,

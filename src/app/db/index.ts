@@ -1,5 +1,5 @@
 import config from "../../config";
-import { UserRole } from "../../generated/prisma/enums";
+import { Role } from "../interface/user.interface";
 import { prisma } from "../utils/prisma";
 import bcrypt from "bcryptjs";
 
@@ -16,7 +16,7 @@ const adminData = {
   name: " Admin",
   email: config.admin.email,
   password: config.admin.password,
-  role: UserRole.ADMIN,
+  role: Role.ADMIN,
   isEmailVerified: true,
 };
 console.log(adminData)
@@ -26,7 +26,7 @@ const seedAdmin = async () => {
     // Check if a super admin already exists
     const isAdminExists = await prisma.user.findFirst({
       where: {
-        role: UserRole.ADMIN,
+        role: Role.ADMIN,
       },
     });
 

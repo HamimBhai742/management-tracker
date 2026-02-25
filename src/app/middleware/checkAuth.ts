@@ -4,14 +4,13 @@ import config from "../../config";
 import {  Secret } from "jsonwebtoken";
 import { prisma } from "../utils/prisma";
 import { AppError } from "../error";
-import { Prisma } from "../../generated/prisma/client";
 import { verifyToken } from "../utils/verifyToken";
 import { IJwtPayload } from "../interface/user.interface";
 
 export const checkAuth =
   (...roles: string[]) =>
   async (
-    req: Request & { user?: Partial<Prisma.UserCreateInput> },
+    req: Request & { user?: IJwtPayload },
     res: Response,
     next: NextFunction,
   ) => {
