@@ -17,4 +17,6 @@ router.post("/resend-otp", userController.resendOtp);
 
 router.post("/forget-password", userController.forgetPassword);
 
+router.get("/", userController.getAllUsers);
+
 export const userRoutes = router;

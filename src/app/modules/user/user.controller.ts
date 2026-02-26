@@ -50,9 +50,21 @@ const forgetPassword = catchAsyncFn(async (req: Request, res: Response) => {
   });
 });
 
+//get all users
+const getAllUsers = catchAsyncFn(async (req: Request, res: Response) => {
+  const users = await userService.getAllUsers();
+  sendResponse(res, {
+    success: true,
+    message: "Users fetched successfully",
+    statusCode: httpStatus.OK,
+    data: users,
+  });
+});
+
 export const userController = {
   registerUser,
   otpVerify,
   resendOtp,
   forgetPassword,
+  getAllUsers
 };

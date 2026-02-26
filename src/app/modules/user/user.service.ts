@@ -156,9 +156,15 @@ const forgetPassword = async (email: string) => {
   };
 };
 
+const getAllUsers=async()=>{
+  const users=await prisma.user.findMany();
+  return users;
+}
+
 export const userService = {
   registerUser,
   otpVerify,
   resendOtp,
   forgetPassword,
+  getAllUsers
 };
