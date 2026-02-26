@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import httpStatus from "http-status";
 
 const login = async (email: string, password: string) => {
+    console.log(email,password)
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, "User not found");

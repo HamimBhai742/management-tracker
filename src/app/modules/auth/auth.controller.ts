@@ -5,6 +5,7 @@ import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status";
 
 const login = catchAsyncFn(async (req: Request, res: Response) => {
+    
   const user = await authService.login(req.body.email, req.body.password);
   sendResponse(res, {
     success: true,
