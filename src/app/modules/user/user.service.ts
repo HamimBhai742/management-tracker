@@ -1,5 +1,5 @@
 import config from "../../../config";
-import { Prisma } from "../../../generated/prisma/client";
+import { Prisma, User } from "../../../generated/prisma/client";
 import bcrypt from "bcryptjs";
 import { prisma } from "../../utils/prisma";
 import { generateOTP } from "../../utils/generateOTP";
@@ -74,6 +74,11 @@ const resendOtp = async (email: string) => {
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, "User not found");
   }
+
+  if (user.isEmailVerified) {
+    throw new AppError(httpStatus.BAD_REQUEST, "User is already verified");
+  }
+
   const otp = generateOTP();
   const otpExpiry = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes from now
   await prisma.user.update({
@@ -161,10 +166,29 @@ const getAllUsers = async () => {
   return users;
 };
 
+const updateUser = async (id: string, payload: Partial<User>) => {
+  const user = await prisma.user.findUnique({ where: { id } });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+  if (payload.password) {
+    payload.password = await bcrypt.hash(
+      payload.password,
+      config.bcrypt_salt_rounds,
+    );
+  }
+  const updatedUser = await prisma.user.update({
+    where: { id },
+    data: payload,
+  });
+  return updatedUser;
+};
+
 export const userService = {
   registerUser,
   otpVerify,
   resendOtp,
   forgetPassword,
   getAllUsers,
+  updateUser,
 };

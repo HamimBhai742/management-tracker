@@ -3,6 +3,7 @@ import catchAsyncFn from "../../utils/catchAsyncFn";
 import { userService } from "./user.service";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status";
+import { IJwtPayload } from "../../interface/user.interface";
 
 //register new user
 const registerUser = catchAsyncFn(async (req: Request, res: Response) => {
@@ -61,10 +62,25 @@ const getAllUsers = catchAsyncFn(async (req: Request, res: Response) => {
   });
 });
 
+//update user
+const updateUser = catchAsyncFn(
+  async (req: Request & { user?: IJwtPayload }, res: Response) => {
+    const { userId } = req.user as IJwtPayload;
+    const user = await userService.updateUser(userId, req.body);
+    sendResponse(res, {
+      success: true,
+      message: "User updated successfully",
+      statusCode: httpStatus.OK,
+      data: user,
+    });
+  },
+);
+
 export const userController = {
   registerUser,
   otpVerify,
   resendOtp,
   forgetPassword,
-  getAllUsers
+  getAllUsers,
+  updateUser,
 };
