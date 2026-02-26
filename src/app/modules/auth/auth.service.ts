@@ -22,6 +22,7 @@ const login = async (email: string, password: string) => {
   }
 
   const token= await generateToken(user);
+  console.log(token)
   return {
     accessToken: token
   };
