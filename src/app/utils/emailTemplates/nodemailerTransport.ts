@@ -9,11 +9,11 @@ const sendEmail = async (
 ) => {
   // Create a transporter
   const transporter = nodemailer.createTransport({
-    // host: "mail.newmodina.com",
+    host: config.smtp.host,
     service: "gmail",
     // port: 465,
-    // port: 587,
-    // secure: true,
+    port: config.smtp.port,
+    secure: false,
     auth: {
       user: config.smtp.user,
       pass: config.smtp.pass,
