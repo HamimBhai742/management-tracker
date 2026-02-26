@@ -26,7 +26,7 @@ export default {
   },
   smtp: {
     host: process.env.SMTP_HOST as string,
-    port: process.env.SMTP_PORT as string,
+    port:Number(process.env.SMTP_PORT),
     user: process.env.SMTP_USER as string,
     pass: process.env.SMTP_PASS as string,
     service: process.env.SMTP_SERVICE as string,

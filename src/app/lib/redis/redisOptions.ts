@@ -11,6 +11,7 @@ export const redisOptions: RedisOptions = {
         return Math.min(times * 100, 3000);
     },
     connectTimeout: 10000,
+    
     keepAlive: 30000,
     maxRetriesPerRequest: null,
 };
