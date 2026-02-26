@@ -3,9 +3,9 @@ import catchAsyncFn from "../../utils/catchAsyncFn";
 import { authService } from "./auth.service";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status";
+import { IJwtPayload } from "../../interface/user.interface";
 
 const login = catchAsyncFn(async (req: Request, res: Response) => {
-    
   const user = await authService.login(req.body.email, req.body.password);
   sendResponse(res, {
     success: true,
@@ -15,4 +15,21 @@ const login = catchAsyncFn(async (req: Request, res: Response) => {
   });
 });
 
-export const authController = { login };
+const changePassword = catchAsyncFn(
+  async (req: Request & { user?: IJwtPayload }, res: Response) => {
+    const { email } = req.user as IJwtPayload;
+    const user = await authService.changePassword(
+      email,
+      req.body.oldPassword,
+      req.body.newPassword,
+    );
+    sendResponse(res, {
+      success: true,
+      message: "Password changed successfully",
+      statusCode: httpStatus.OK,
+      data: user,
+    });
+  },
+);
+
+export const authController = { login,changePassword };
