@@ -1,7 +1,9 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import { userRoutes } from "../modules/user/user.routes";
 import { authRoutes } from "../modules/auth/auth.routes";
 import { projectRoutes } from "../modules/projects/project.routes";
+import { upload } from "../middleware/upload";
+import { uploadFile } from "../utils/uploadFile";
 
 const router = Router();
 
@@ -22,6 +24,23 @@ const routes = [
 
 routes.forEach((route) => {
   router.use(route.path, route.router);
+});
+
+router.post("/upload", upload.single("upload"), (req: Request, res: Response) => {
+  if (req.file) {
+    const protocol = req.protocol;
+    const host = req.get("host");
+    const result = uploadFile(req.file, { protocol, host });
+    result.then((response) => {
+      if (response.success) {
+        return res.status(200).json(response);
+      } else {
+        return res.status(400).json(response);
+      }
+    });
+  } else {
+    return res.status(400).json({ success: false, error: "No file provided" });
+  }
 });
 
 export default router;
