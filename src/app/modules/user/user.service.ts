@@ -6,8 +6,8 @@ import { generateOTP } from "../../utils/generateOTP";
 import { otpQueueEmail } from "../../bullMQ/init";
 import { AppError } from "../../error";
 import httpStatus from "http-status";
-import { generateForgetToken } from "../../utils/generateToken";
 import { verifyToken } from "../../utils/verifyToken";
+import crypto from "crypto";
 
 const registerUser = async (payload: Prisma.UserCreateInput) => {
   const { password } = payload;
@@ -129,11 +129,20 @@ const forgetPassword = async (email: string) => {
     throw new AppError(httpStatus.UNAUTHORIZED, `User is ${user.status}`);
   }
 
-  const token = await generateForgetToken(
-    user,
-    config.jwt.access_secret as string,
-    "5m",
-  );
+  const resetToken = crypto.randomBytes(32).toString("hex");
+
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  await prisma.user.update({
+    where: { email },
+    data: {
+      resetToken: hashedToken,
+      resetTokenExpries: new Date(Date.now() + 5 * 60 * 1000), // 5 minutes from now
+    },
+  });
 
   await otpQueueEmail.add(
     "forgetPassword",
@@ -141,7 +150,7 @@ const forgetPassword = async (email: string) => {
       userName: user.name,
       email: user.email,
       subject: "Reset Password",
-      resetLink: `http://16.170.226.171:5001/api/v1/user/reset-password?token=${token}`,
+      resetLink: `http://16.170.226.171:5001/api/v1/user/reset-password?token=${resetToken}`,
     },
     {
       jobId: `${user.id}-${Date.now()}`,
@@ -160,16 +169,21 @@ const forgetPassword = async (email: string) => {
 };
 
 const resetPassword = async (token: string, password: string) => {
-  const verifiedToken = await verifyToken(
-    token,
-    config.jwt.access_secret as string,
-  );
+  // 1. Hash incoming token
+  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
-  const user = await prisma.user.findUnique({
-    where: { id: verifiedToken.userId },
+  // 2. Find user with valid token + not expired
+  const user = await prisma.user.findFirst({
+    where: {
+      resetToken: hashedToken,
+      resetTokenExpries: {
+        gt: new Date(),
+      },
+    },
   });
+
   if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+    throw new AppError(httpStatus.UNAUTHORIZED, "Token has expired");
   }
 
   const hashedPassword = await bcrypt.hash(password, config.bcrypt_salt_rounds);
@@ -178,6 +192,8 @@ const resetPassword = async (token: string, password: string) => {
     where: { id: user.id },
     data: {
       password: hashedPassword,
+      resetToken: null,
+      resetTokenExpries: null,
     },
   });
 
@@ -195,7 +211,7 @@ const resetPassword = async (token: string, password: string) => {
       attempts: 3,
       backoff: { type: "fixed", delay: 5000 },
     },
-  )
+  );
   return {
     name: user.name,
     email: user.email,

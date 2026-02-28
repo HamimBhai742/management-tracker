@@ -34,6 +34,8 @@ export type UserMinAggregateOutputType = {
   otpExpires: Date | null
   role: $Enums.UserRole | null
   status: $Enums.UserStatus | null
+  resetToken: string | null
+  resetTokenExpries: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -48,6 +50,8 @@ export type UserMaxAggregateOutputType = {
   otpExpires: Date | null
   role: $Enums.UserRole | null
   status: $Enums.UserStatus | null
+  resetToken: string | null
+  resetTokenExpries: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -62,6 +66,8 @@ export type UserCountAggregateOutputType = {
   otpExpires: number
   role: number
   status: number
+  resetToken: number
+  resetTokenExpries: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -78,6 +84,8 @@ export type UserMinAggregateInputType = {
   otpExpires?: true
   role?: true
   status?: true
+  resetToken?: true
+  resetTokenExpries?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -92,6 +100,8 @@ export type UserMaxAggregateInputType = {
   otpExpires?: true
   role?: true
   status?: true
+  resetToken?: true
+  resetTokenExpries?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -106,6 +116,8 @@ export type UserCountAggregateInputType = {
   otpExpires?: true
   role?: true
   status?: true
+  resetToken?: true
+  resetTokenExpries?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -193,6 +205,8 @@ export type UserGroupByOutputType = {
   otpExpires: Date | null
   role: $Enums.UserRole
   status: $Enums.UserStatus
+  resetToken: string | null
+  resetTokenExpries: Date | null
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -228,6 +242,8 @@ export type UserWhereInput = {
   otpExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
+  resetToken?: Prisma.StringNullableFilter<"User"> | string | null
+  resetTokenExpries?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   projects?: Prisma.ProjectListRelationFilter
@@ -246,6 +262,8 @@ export type UserOrderByWithRelationInput = {
   otpExpires?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  resetToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  resetTokenExpries?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   projects?: Prisma.ProjectOrderByRelationAggregateInput
@@ -267,6 +285,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   otpExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
+  resetToken?: Prisma.StringNullableFilter<"User"> | string | null
+  resetTokenExpries?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   projects?: Prisma.ProjectListRelationFilter
@@ -285,6 +305,8 @@ export type UserOrderByWithAggregationInput = {
   otpExpires?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  resetToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  resetTokenExpries?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -305,6 +327,8 @@ export type UserScalarWhereWithAggregatesInput = {
   otpExpires?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   role?: Prisma.EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
   status?: Prisma.EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus
+  resetToken?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  resetTokenExpries?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -319,6 +343,8 @@ export type UserCreateInput = {
   otpExpires?: Date | string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
+  resetToken?: string | null
+  resetTokenExpries?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   projects?: Prisma.ProjectCreateNestedManyWithoutUserInput
@@ -337,6 +363,8 @@ export type UserUncheckedCreateInput = {
   otpExpires?: Date | string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
+  resetToken?: string | null
+  resetTokenExpries?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutUserInput
@@ -355,6 +383,8 @@ export type UserUpdateInput = {
   otpExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpries?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUpdateManyWithoutUserNestedInput
@@ -373,6 +403,8 @@ export type UserUncheckedUpdateInput = {
   otpExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpries?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutUserNestedInput
@@ -391,6 +423,8 @@ export type UserCreateManyInput = {
   otpExpires?: Date | string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
+  resetToken?: string | null
+  resetTokenExpries?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -405,6 +439,8 @@ export type UserUpdateManyMutationInput = {
   otpExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpries?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -419,6 +455,8 @@ export type UserUncheckedUpdateManyInput = {
   otpExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpries?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -433,6 +471,8 @@ export type UserCountOrderByAggregateInput = {
   otpExpires?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  resetToken?: Prisma.SortOrder
+  resetTokenExpries?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -447,6 +487,8 @@ export type UserMaxOrderByAggregateInput = {
   otpExpires?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  resetToken?: Prisma.SortOrder
+  resetTokenExpries?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -461,6 +503,8 @@ export type UserMinOrderByAggregateInput = {
   otpExpires?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  resetToken?: Prisma.SortOrder
+  resetTokenExpries?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -564,6 +608,8 @@ export type UserCreateWithoutProjectsInput = {
   otpExpires?: Date | string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
+  resetToken?: string | null
+  resetTokenExpries?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   learningLogs?: Prisma.LearningLogCreateNestedManyWithoutUserInput
@@ -581,6 +627,8 @@ export type UserUncheckedCreateWithoutProjectsInput = {
   otpExpires?: Date | string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
+  resetToken?: string | null
+  resetTokenExpries?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   learningLogs?: Prisma.LearningLogUncheckedCreateNestedManyWithoutUserInput
@@ -614,6 +662,8 @@ export type UserUpdateWithoutProjectsInput = {
   otpExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpries?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   learningLogs?: Prisma.LearningLogUpdateManyWithoutUserNestedInput
@@ -631,6 +681,8 @@ export type UserUncheckedUpdateWithoutProjectsInput = {
   otpExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpries?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   learningLogs?: Prisma.LearningLogUncheckedUpdateManyWithoutUserNestedInput
@@ -648,6 +700,8 @@ export type UserCreateWithoutLearningLogsInput = {
   otpExpires?: Date | string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
+  resetToken?: string | null
+  resetTokenExpries?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   projects?: Prisma.ProjectCreateNestedManyWithoutUserInput
@@ -665,6 +719,8 @@ export type UserUncheckedCreateWithoutLearningLogsInput = {
   otpExpires?: Date | string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
+  resetToken?: string | null
+  resetTokenExpries?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutUserInput
@@ -698,6 +754,8 @@ export type UserUpdateWithoutLearningLogsInput = {
   otpExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpries?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUpdateManyWithoutUserNestedInput
@@ -715,6 +773,8 @@ export type UserUncheckedUpdateWithoutLearningLogsInput = {
   otpExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpries?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutUserNestedInput
@@ -732,6 +792,8 @@ export type UserCreateWithoutExpensesInput = {
   otpExpires?: Date | string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
+  resetToken?: string | null
+  resetTokenExpries?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   projects?: Prisma.ProjectCreateNestedManyWithoutUserInput
@@ -749,6 +811,8 @@ export type UserUncheckedCreateWithoutExpensesInput = {
   otpExpires?: Date | string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
+  resetToken?: string | null
+  resetTokenExpries?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutUserInput
@@ -782,6 +846,8 @@ export type UserUpdateWithoutExpensesInput = {
   otpExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpries?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUpdateManyWithoutUserNestedInput
@@ -799,6 +865,8 @@ export type UserUncheckedUpdateWithoutExpensesInput = {
   otpExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpries?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutUserNestedInput
@@ -816,6 +884,8 @@ export type UserCreateWithoutNotesInput = {
   otpExpires?: Date | string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
+  resetToken?: string | null
+  resetTokenExpries?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   projects?: Prisma.ProjectCreateNestedManyWithoutUserInput
@@ -833,6 +903,8 @@ export type UserUncheckedCreateWithoutNotesInput = {
   otpExpires?: Date | string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
+  resetToken?: string | null
+  resetTokenExpries?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutUserInput
@@ -866,6 +938,8 @@ export type UserUpdateWithoutNotesInput = {
   otpExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpries?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUpdateManyWithoutUserNestedInput
@@ -883,6 +957,8 @@ export type UserUncheckedUpdateWithoutNotesInput = {
   otpExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpries?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutUserNestedInput
@@ -958,6 +1034,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   otpExpires?: boolean
   role?: boolean
   status?: boolean
+  resetToken?: boolean
+  resetTokenExpries?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   projects?: boolean | Prisma.User$projectsArgs<ExtArgs>
@@ -977,6 +1055,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   otpExpires?: boolean
   role?: boolean
   status?: boolean
+  resetToken?: boolean
+  resetTokenExpries?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -991,6 +1071,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   otpExpires?: boolean
   role?: boolean
   status?: boolean
+  resetToken?: boolean
+  resetTokenExpries?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -1005,11 +1087,13 @@ export type UserSelectScalar = {
   otpExpires?: boolean
   role?: boolean
   status?: boolean
+  resetToken?: boolean
+  resetTokenExpries?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "isEmailVerified" | "otp" | "otpExpires" | "role" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "isEmailVerified" | "otp" | "otpExpires" | "role" | "status" | "resetToken" | "resetTokenExpries" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   projects?: boolean | Prisma.User$projectsArgs<ExtArgs>
   learningLogs?: boolean | Prisma.User$learningLogsArgs<ExtArgs>
@@ -1038,6 +1122,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     otpExpires: Date | null
     role: $Enums.UserRole
     status: $Enums.UserStatus
+    resetToken: string | null
+    resetTokenExpries: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -1476,6 +1562,8 @@ export interface UserFieldRefs {
   readonly otpExpires: Prisma.FieldRef<"User", 'DateTime'>
   readonly role: Prisma.FieldRef<"User", 'UserRole'>
   readonly status: Prisma.FieldRef<"User", 'UserStatus'>
+  readonly resetToken: Prisma.FieldRef<"User", 'String'>
+  readonly resetTokenExpries: Prisma.FieldRef<"User", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }

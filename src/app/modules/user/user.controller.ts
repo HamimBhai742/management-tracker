@@ -78,7 +78,7 @@ const updateUser = catchAsyncFn(
 
 const resetPassword = catchAsyncFn(async (req: Request, res: Response) => {
   const user = await userService.resetPassword(
-    req.query.token as string,
+    req.query.userId as string,
     req.body.password,
   );
   sendResponse(res, {
