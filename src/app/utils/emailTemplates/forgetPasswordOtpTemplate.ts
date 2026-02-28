@@ -4,7 +4,7 @@ export const forgotPasswordTemplate = async (
   userName: string,
   subject: string,
   email: string,
-  resetLink: string
+  resetLink: string,
 ) => {
   const html = `
 <!DOCTYPE html>

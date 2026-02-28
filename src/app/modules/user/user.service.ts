@@ -141,7 +141,7 @@ const forgetPassword = async (email: string) => {
       userName: user.name,
       email: user.email,
       subject: "Reset Password",
-      resetLink: `http://16.170.226.171:5001/reset-password?token=${token}`,
+      resetLink: `http://16.170.226.171:5001/api/v1/user/reset-password?token=${token}`,
     },
     {
       jobId: `${user.id}-${Date.now()}`,
@@ -180,6 +180,22 @@ const resetPassword = async (token: string, password: string) => {
       password: hashedPassword,
     },
   });
+
+  await otpQueueEmail.add(
+    "resetPasswordSuccess",
+    {
+      userName: user.name,
+      email: user.email,
+      subject: "Reset Password Successfully",
+      loginLink: `http://16.170.226.171:5001/api/v1/auth/login`,
+    },
+    {
+      jobId: `${user.id}-${Date.now()}`,
+      removeOnComplete: true,
+      attempts: 3,
+      backoff: { type: "fixed", delay: 5000 },
+    },
+  )
   return {
     name: user.name,
     email: user.email,
