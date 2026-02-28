@@ -1,138 +1,121 @@
 import sendEmail from "./nodemailerTransport";
 
-export const forgetPasswordOtpTemplate = async (userName: string, subject: string, email: string, otp: string) => {
-    const html = `
+export const forgotPasswordTemplate = async (
+  userName: string,
+  subject: string,
+  email: string,
+  resetLink: string
+) => {
+  const html = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Forgot Password Verification</title>
+<title>Password Reset Request</title>
 <style>
-    body {
-        margin: 0; padding: 0;
-        background-color: #f4f6f8;
-        font-family: 'Segoe UI', Roboto, Arial, sans-serif;
-        color: #2c3e50;
-    }
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #f4f6f8;
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    color: #2c3e50;
+  }
 
-    .container {
-        max-width: 600px;
-        margin: 30px auto;
-        background-color: #ffffff;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-    }
+  .container {
+    max-width: 600px;
+    margin: 40px auto;
+    background-color: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+  }
 
-    .header {
-        background-color: #225ce4;
-        padding: 30px;
-        text-align: center;
-        color: #fff;
-    }
+  .header {
+    background-color: #225ce4;
+    padding: 30px;
+    text-align: center;
+    color: #fff;
+  }
 
-    .header img {
-        max-width: 100px;
-        margin-bottom: 15px;
-    }
+  .header img {
+    max-width: 120px;
+    margin-bottom: 10px;
+  }
 
+  .content {
+    padding: 35px 30px;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .button-wrapper {
+    text-align: center;
+    margin: 30px 0;
+  }
+
+  .reset-button {
+    display: inline-block;
+    padding: 14px 28px;
+    background-color: #225ce4;
+    color: #ffffff !important;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .reset-button:hover {
+    background-color: #1a3dbd;
+  }
+
+  .footer {
+    text-align: center;
+    font-size: 13px;
+    color: #7f8c8d;
+    padding: 25px;
+    border-top: 1px solid #eaeaea;
+  }
+
+  @media only screen and (max-width: 600px) {
     .content {
-        padding: 30px 25px;
-        line-height: 1.6;
-        font-size: 16px;
+      padding: 25px 20px;
     }
-
-    .greeting {
-        font-weight: 600;
-        margin-bottom: 15px;
-    }
-
-    .otp-section {
-        background-color: #f4f6f8;
-        padding: 20px;
-        text-align: center;
-        border-radius: 8px;
-        margin: 20px 0;
-    }
-
-    .otp-code {
-        font-size: 32px;
-        font-weight: bold;
-        color: #225ce4;
-        letter-spacing: 3px;
-    }
-
-    .cta-button {
-        display: inline-block;
-        margin-top: 20px;
-        padding: 12px 25px;
-        background-color: #225ce4;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 5px;
-        font-weight: 600;
-        transition: background-color 0.3s ease;
-    }
-
-    .cta-button:hover {
-        background-color: #1a3dbd;
-    }
-
-    .footer {
-        text-align: center;
-        font-size: 14px;
-        color: #7f8c8d;
-        padding: 20px 25px;
-        border-top: 1px solid #e0e0e0;
-    }
-
-    .footer a {
-        color: #225ce4;
-        text-decoration: none;
-    }
-
-    @media only screen and (max-width: 600px) {
-        .content, .footer {
-            padding: 20px 15px;
-        }
-        .otp-code {
-            font-size: 28px;
-        }
-    }
+  }
 </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <img src="http://16.170.226.171:5001/uploads/da2a090e-5c29-48fe-8351-4eddf559dad1.avif" alt="Management Tracker Logo">
-            <h1>Management Tracker</h1>
-        </div>
-
-        <!-- Content -->
-        <div class="content">
-            <p class="greeting">Hello ${userName},</p>
-            <p>We received a request to reset the password for your account. Use the OTP below to complete the process. <strong>Do not share this code with anyone.</strong></p>
-
-            <!-- OTP Section -->
-            <div class="otp-section">
-                <p class="otp-code">${otp}</p>
-            </div>
-
-            <p>If you did not request this, you can safely ignore this email.</p>
-
-            <a href="#" class="cta-button">Reset Password</a>
-        </div>
-
-        <!-- Footer -->
-        <div class="footer">
-            <p>Regards,<br>Team <strong>Management Tracker</strong></p>
-            <p><a href="#">www.managementtracker.com</a></p>
-        </div>
+  <div class="container">
+    <div class="header">
+      <img src="http://16.170.226.171:5001/uploads/da2a090e-5c29-48fe-8351-4eddf559dad1.avif" alt="Management Tracker Logo">
+      <h1>Management Tracker</h1>
     </div>
+
+    <div class="content">
+      <p>Hi ${userName},</p>
+
+      <p>We received a request to reset the password for your Management Tracker account.</p>
+
+      <p>Please click the button below to set a new password. This link will expire shortly for security reasons.</p>
+
+      <div class="button-wrapper">
+        <a href="${resetLink}" class="reset-button">Reset Your Password</a>
+      </div>
+
+      <p>If you did not request a password reset, you can safely ignore this email. Your account remains secure.</p>
+
+      <p>For security reasons, please do not share this link with anyone.</p>
+
+      <p>Best regards,<br><strong>Management Tracker Team</strong></p>
+    </div>
+
+    <div class="footer">
+      © ${new Date().getFullYear()} Management Tracker. All rights reserved.
+    </div>
+  </div>
 </body>
 </html>
 `;
-    await sendEmail(email, subject, html);
+
+  await sendEmail(email, subject, html);
 };

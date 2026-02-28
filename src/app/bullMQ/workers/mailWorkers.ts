@@ -10,7 +10,7 @@ import { supportAdminTemplate } from "../../utils/emailTemplates/adminSupportTem
 import { supportAutoReplyTemplate } from "../../utils/emailTemplates/userAutoReplyTemplate";
 import { supportClosedTemplate } from "../../utils/emailTemplates/supportTicketClosedTemplate";
 import { loginOtpTemplate } from "../../utils/emailTemplates/loginOtpTemplate";
-import { forgetPasswordOtpTemplate } from "../../utils/emailTemplates/forgetPasswordOtpTemplate";
+import { forgotPasswordTemplate } from "../../utils/emailTemplates/forgetPasswordOtpTemplate";
 
 export const otpEmailWorker = new Worker(
   "otp-queue-email",
@@ -21,9 +21,9 @@ export const otpEmailWorker = new Worker(
         return;
       }
       switch (job.name) {
-        case "forgetPasswordOtp": {
-          const { userName, email, otpCode, subject } = job.data;
-          await forgetPasswordOtpTemplate(userName, subject, email, otpCode);
+        case "forgetPassword": {
+          const { userName, email, resetLink, subject } = job.data;
+          await forgotPasswordTemplate(userName, subject, email, resetLink);
           return "Otp end job completed";
         }
         // handle verify

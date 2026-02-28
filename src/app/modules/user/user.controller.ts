@@ -76,6 +76,19 @@ const updateUser = catchAsyncFn(
   },
 );
 
+const resetPassword = catchAsyncFn(async (req: Request, res: Response) => {
+  const user = await userService.resetPassword(
+    req.query.token as string,
+    req.body.password,
+  );
+  sendResponse(res, {
+    success: true,
+    message: "User updated successfully",
+    statusCode: httpStatus.OK,
+    data: user,
+  });
+});
+
 export const userController = {
   registerUser,
   otpVerify,
@@ -83,4 +96,5 @@ export const userController = {
   forgetPassword,
   getAllUsers,
   updateUser,
+  resetPassword,
 };

@@ -6,6 +6,8 @@ import { generateOTP } from "../../utils/generateOTP";
 import { otpQueueEmail } from "../../bullMQ/init";
 import { AppError } from "../../error";
 import httpStatus from "http-status";
+import { generateForgetToken } from "../../utils/generateToken";
+import { verifyToken } from "../../utils/verifyToken";
 
 const registerUser = async (payload: Prisma.UserCreateInput) => {
   const { password } = payload;
@@ -127,23 +129,19 @@ const forgetPassword = async (email: string) => {
     throw new AppError(httpStatus.UNAUTHORIZED, `User is ${user.status}`);
   }
 
-  const otp = generateOTP();
-  const otpExpiry = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes from now
-  await prisma.user.update({
-    where: { email },
-    data: {
-      otp: otp,
-      otpExpires: otpExpiry,
-    },
-  });
+  const token = await generateForgetToken(
+    user,
+    config.jwt.access_secret as string,
+    "5m",
+  );
 
   await otpQueueEmail.add(
-    "forgetPasswordOtp",
+    "forgetPassword",
     {
       userName: user.name,
       email: user.email,
-      otpCode: otp,
       subject: "Your Verification OTP",
+      resetLink: `http://16.170.226.171:5001/reset-password?token=${token}`,
     },
     {
       jobId: `${user.id}-${Date.now()}`,
@@ -153,6 +151,35 @@ const forgetPassword = async (email: string) => {
     },
   );
 
+  return {
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    status: user.status,
+  };
+};
+
+const resetPassword = async (token: string, password: string) => {
+  const verifiedToken = await verifyToken(
+    token,
+    config.jwt.access_secret as string,
+  );
+
+  const user = await prisma.user.findUnique({
+    where: { id: verifiedToken.userId },
+  });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  const hashedPassword = await bcrypt.hash(password, config.bcrypt_salt_rounds);
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: {
+      password: hashedPassword,
+    },
+  });
   return {
     name: user.name,
     email: user.email,
@@ -191,4 +218,5 @@ export const userService = {
   forgetPassword,
   getAllUsers,
   updateUser,
+  resetPassword,
 };
