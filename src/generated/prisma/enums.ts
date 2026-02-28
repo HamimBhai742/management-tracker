@@ -27,9 +27,10 @@ export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus]
 
 
 export const ProjectStatus = {
-  active: 'active',
-  comleted: 'comleted',
-  paused: 'paused'
+  PLANNED: 'PLANNED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  ON_HOLD: 'ON_HOLD',
+  COMPLETED: 'COMPLETED'
 } as const
 
 export type ProjectStatus = (typeof ProjectStatus)[keyof typeof ProjectStatus]
