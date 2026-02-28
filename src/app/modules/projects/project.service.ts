@@ -1,5 +1,7 @@
 import { Prisma } from "../../../generated/prisma/client";
+import { AppError } from "../../error";
 import { prisma } from "../../utils/prisma";
+import httpStatus from "http-status";
 
 const createNewProject = async (
   payload: Prisma.ProjectCreateInput,
@@ -24,6 +26,13 @@ const updateProject = async (
   userId: string,
   payload: Partial<Prisma.ProjectCreateInput>,
 ) => {
+  const findproject = await prisma.project.findUnique({
+    where: { id_userId: { id, userId } },
+  });
+  if (!findproject) {
+    throw new AppError(httpStatus.NOT_FOUND, "Project not found");
+  }
+
   const project = await prisma.project.update({
     where: { id_userId: { id, userId } },
     data: payload,
