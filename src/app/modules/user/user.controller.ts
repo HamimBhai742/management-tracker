@@ -45,7 +45,7 @@ const forgetPassword = catchAsyncFn(async (req: Request, res: Response) => {
   const user = await userService.forgetPassword(req.body.email);
   sendResponse(res, {
     success: true,
-    message: "Otp sent successfully",
+    message: "Reset link sent successfully",
     statusCode: httpStatus.OK,
     data: user,
   });

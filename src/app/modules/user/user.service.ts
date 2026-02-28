@@ -140,7 +140,7 @@ const forgetPassword = async (email: string) => {
     {
       userName: user.name,
       email: user.email,
-      subject: "Your Verification OTP",
+      subject: "Reset Password",
       resetLink: `http://16.170.226.171:5001/reset-password?token=${token}`,
     },
     {
