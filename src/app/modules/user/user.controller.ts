@@ -78,12 +78,12 @@ const updateUser = catchAsyncFn(
 
 const resetPassword = catchAsyncFn(async (req: Request, res: Response) => {
   const user = await userService.resetPassword(
-    req.query.userId as string,
+    req.query.token as string,
     req.body.password,
   );
   sendResponse(res, {
     success: true,
-    message: "User updated successfully",
+    message: "User password reset successfully",
     statusCode: httpStatus.OK,
     data: user,
   });
