@@ -7,13 +7,6 @@ import { IJwtPayload } from "../../interface/user.interface";
 
 const login = catchAsyncFn(async (req: Request, res: Response) => {
   const user = await authService.login(req.body.email, req.body.password);
-
-  res.cookie("token", user.accessToken, {
-  httpOnly: true,
-  secure: true,          // true in production (HTTPS)
-  sameSite: "lax",
-  maxAge: 1 * 24 * 60 * 60 * 1000, // 7 days
-});
   sendResponse(res, {
     success: true,
     message: "User logged in successfully",
