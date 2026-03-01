@@ -23,6 +23,7 @@ export const ProjectSchema = z.object({
     }),
   clientName: z.string().min(1, "Client name is required"),
   status: ProjectStatusEnum,
+  value: z.number()
 });
 
 // update ProjectSchema
@@ -43,4 +44,5 @@ export const UpdateProjectSchema = z.object({
     }),
   clientName: z.string().optional(),
   status: ProjectStatusEnum.optional(),
+  value: z.number().optional(),
 });

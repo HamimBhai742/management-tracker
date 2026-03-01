@@ -291,7 +291,7 @@ const getMyStats = async (userId: string) => {
     totalMyInProgressProjects,
     totalMyOnHoldProjects,
     totalMyPlannedProjects,
-    totalMyProjectsValue: totalMyProjectsValue._sum.value,
+    totalMyProjectsValue: totalMyProjectsValue,
   };
 };
 
