@@ -285,7 +285,8 @@ const getMyStats = async (userId: string) => {
     },
   });
 
-  const totalMyKpiGain = totalMyProjectsValue._sum.value ?? 0 * 0.25;
+  const totalValue = totalMyProjectsValue._sum.value ?? 0;
+  const totalMyKpiGain = totalValue * 0.25;
 
   return {
     totalMyProjects,
@@ -294,7 +295,7 @@ const getMyStats = async (userId: string) => {
     totalMyOnHoldProjects,
     totalMyPlannedProjects,
     totalMyProjectsValue: totalMyProjectsValue._sum.value,
-    totalMyKpiGain
+    totalMyKpiGain,
   };
 };
 
