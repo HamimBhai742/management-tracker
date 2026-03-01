@@ -17,7 +17,7 @@ router.post("/otp-verify", userController.otpVerify);
 
 router.post("/resend-otp", userController.resendOtp);
 
-router.post("/forget-password", userController.forgetPassword);
+router.post("/forgot-password", userController.forgetPassword);
 
 router.get("/", userController.getAllUsers);
 
