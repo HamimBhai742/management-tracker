@@ -149,7 +149,7 @@ const forgetPassword = async (email: string) => {
     {
       userName: user.name,
       email: user.email,
-      subject: "Reset Password",
+      subject: "Reset Password Link",
       resetLink: `http://localhost:3000/reset-password?token=${resetToken}`,
     },
     {
