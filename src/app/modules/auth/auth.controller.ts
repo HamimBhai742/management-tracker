@@ -7,6 +7,12 @@ import { IJwtPayload } from "../../interface/user.interface";
 
 const login = catchAsyncFn(async (req: Request, res: Response) => {
   const user = await authService.login(req.body.email, req.body.password);
+
+  res.cookie("accessToken", user.accessToken, {
+    httpOnly: true,
+    sameSite: "none",
+    expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+  });
   sendResponse(res, {
     success: true,
     message: "User logged in successfully",
@@ -23,6 +29,7 @@ const changePassword = catchAsyncFn(
       req.body.oldPassword,
       req.body.newPassword,
     );
+
     sendResponse(res, {
       success: true,
       message: "Password changed successfully",
@@ -32,4 +39,17 @@ const changePassword = catchAsyncFn(
   },
 );
 
-export const authController = { login,changePassword };
+const authMe = catchAsyncFn(
+  async (req: Request & { user?: IJwtPayload }, res: Response) => {
+    const { email } = req.user as IJwtPayload;
+    const user = await authService.authMe(email);
+    sendResponse(res, {
+      success: true,
+      message: "User retrieved successfully",
+      statusCode: httpStatus.OK,
+      data: user,
+    });
+  },
+);
+
+export const authController = { login, changePassword, authMe };

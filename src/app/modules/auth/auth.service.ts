@@ -80,4 +80,12 @@ const changePassword = async (
   );
 };
 
-export const authService = { login, changePassword };
+const authMe = async (email: string) => {
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+  return user;
+};
+
+export const authService = { login, changePassword, authMe };

@@ -13,4 +13,6 @@ router.post(
   authController.changePassword,
 );
 
+router.get("/me", checkAuth(Role.USER), authController.authMe);
+
 export const authRoutes = router;
