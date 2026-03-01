@@ -17,7 +17,7 @@ const registerUser = async (payload: Prisma.UserCreateInput) => {
   const otpExpiry = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes from now
   payload.otp = otp;
   payload.otpExpires = otpExpiry;
-  console.log(payload);
+
   // create user
   const user = await prisma.user.create({ data: payload });
 

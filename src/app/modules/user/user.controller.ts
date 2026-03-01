@@ -11,7 +11,7 @@ const registerUser = catchAsyncFn(async (req: Request, res: Response) => {
 
   sendResponse(res, {
     success: true,
-    message: "User created successfully",
+    message: "User registered successfully. Please verify your email",
     statusCode: httpStatus.CREATED,
     data: user,
   });
@@ -22,7 +22,7 @@ const otpVerify = catchAsyncFn(async (req: Request, res: Response) => {
   const user = await userService.otpVerify(req.body.email, req.body.otp);
   sendResponse(res, {
     success: true,
-    message: "User verified successfully",
+    message: "User verified successfully. Please login",
     statusCode: httpStatus.OK,
     data: null,
   });
@@ -45,7 +45,7 @@ const forgetPassword = catchAsyncFn(async (req: Request, res: Response) => {
   const user = await userService.forgetPassword(req.body.email);
   sendResponse(res, {
     success: true,
-    message: "Reset link sent successfully",
+    message: "Reset link sent successfully. Please check your email",
     statusCode: httpStatus.OK,
     data: user,
   });
@@ -69,7 +69,7 @@ const updateUser = catchAsyncFn(
     const user = await userService.updateUser(userId, req.body);
     sendResponse(res, {
       success: true,
-      message: "User updated successfully",
+      message: "User updated successfully.",
       statusCode: httpStatus.OK,
       data: user,
     });
@@ -83,7 +83,7 @@ const resetPassword = catchAsyncFn(async (req: Request, res: Response) => {
   );
   sendResponse(res, {
     success: true,
-    message: "User password reset successfully",
+    message: "User password reset successfully. Please login",
     statusCode: httpStatus.OK,
     data: user,
   });
