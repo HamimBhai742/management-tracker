@@ -269,11 +269,29 @@ const getMyStats = async (userId: string) => {
     },
   });
 
+  const totalMyPlannedProjects = await prisma.project.count({
+    where: {
+      userId,
+      status: "PLANNED",
+    },
+  });
+
+  const totalMyProjectsValue = await prisma.project.aggregate({
+    where: {
+      userId,
+    },
+    _sum: {
+      value: true,
+    },
+  });
+
   return {
     totalMyProjects,
     totalMyCompletedProjects,
     totalMyInProgressProjects,
     totalMyOnHoldProjects,
+    totalMyPlannedProjects,
+    totalMyProjectsValue: totalMyProjectsValue._sum.value,
   };
 };
 
