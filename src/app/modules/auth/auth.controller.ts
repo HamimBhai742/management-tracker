@@ -10,7 +10,7 @@ const login = catchAsyncFn(async (req: Request, res: Response) => {
 
   res.cookie("token", user.accessToken, {
   httpOnly: true,
-  secure: false,          // true in production (HTTPS)
+  secure: true,          // true in production (HTTPS)
   sameSite: "lax",
   maxAge: 1 * 24 * 60 * 60 * 1000, // 7 days
 });
