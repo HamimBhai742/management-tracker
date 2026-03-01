@@ -25,4 +25,6 @@ router.put("/", checkAuth(Role.USER), userController.updateUser);
 
 router.patch("/reset-password", userController.resetPassword);
 
+router.get("/stats", checkAuth(Role.USER), userController.getMyStats);
+
 export const userRoutes = router;

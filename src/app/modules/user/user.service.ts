@@ -243,6 +243,40 @@ const updateUser = async (id: string, payload: Partial<User>) => {
   return updatedUser;
 };
 
+const getMyStats = async (userId: string) => {
+  const totalMyProjects = await prisma.project.count({
+    where: { userId },
+  });
+
+  const totalMyCompletedProjects = await prisma.project.count({
+    where: {
+      userId,
+      status: "COMPLETED",
+    },
+  });
+
+  const totalMyInProgressProjects = await prisma.project.count({
+    where: {
+      userId,
+      status: "IN_PROGRESS",
+    },
+  });
+
+  const totalMyOnHoldProjects = await prisma.project.count({
+    where: {
+      userId,
+      status: "ON_HOLD",
+    },
+  });
+
+  return {
+    totalMyProjects,
+    totalMyCompletedProjects,
+    totalMyInProgressProjects,
+    totalMyOnHoldProjects,
+  };
+};
+
 export const userService = {
   registerUser,
   otpVerify,
@@ -251,4 +285,5 @@ export const userService = {
   getAllUsers,
   updateUser,
   resetPassword,
+  getMyStats,
 };

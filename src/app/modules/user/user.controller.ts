@@ -89,6 +89,19 @@ const resetPassword = catchAsyncFn(async (req: Request, res: Response) => {
   });
 });
 
+const getMyStats = catchAsyncFn(
+  async (req: Request & { user?: IJwtPayload }, res: Response) => {
+    const { userId } = req.user as IJwtPayload;
+    const user = await userService.getMyStats(userId);
+    sendResponse(res, {
+      success: true,
+      message: "User stats fetched successfully",
+      statusCode: httpStatus.OK,
+      data: user,
+    });
+  },
+);
+
 export const userController = {
   registerUser,
   otpVerify,
@@ -97,4 +110,5 @@ export const userController = {
   getAllUsers,
   updateUser,
   resetPassword,
+  getMyStats,
 };

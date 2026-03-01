@@ -491,14 +491,6 @@ export type LearningLogUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.LearningLogScalarWhereInput | Prisma.LearningLogScalarWhereInput[]
 }
 
-export type FloatFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type LearningLogCreateWithoutUserInput = {
   id?: string
   topic: string

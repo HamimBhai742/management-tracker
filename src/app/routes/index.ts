@@ -4,6 +4,7 @@ import { authRoutes } from "../modules/auth/auth.routes";
 import { projectRoutes } from "../modules/projects/project.routes";
 import { upload } from "../middleware/upload";
 import { uploadFile } from "../utils/uploadFile";
+import { adminRoutes } from "../modules/admin/admin.routes";
 
 const router = Router();
 
@@ -19,6 +20,10 @@ const routes = [
   {
     path: "/project",
     router:projectRoutes,
+  },
+  {
+    path: "/admin",
+    router:adminRoutes
   }
 ];
 
