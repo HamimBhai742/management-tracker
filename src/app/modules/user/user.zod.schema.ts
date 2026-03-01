@@ -7,3 +7,5 @@ export const userZodSchema = z.object({
   role: z.enum(["ADMIN", "USER"]).optional(),
   status: z.enum(["ACTIVE", "INACTIVE", "BLOCKED"]).optional(),
 });
+
+
