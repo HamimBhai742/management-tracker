@@ -9,7 +9,7 @@ import cookieParser from 'cookie-parser'
 
 const app: Application = express();
 app.use(cors({
-  origin: "*" 
+  origin: ["https://project-management-tracker-three.vercel.app","http://16.171.132.158:3000","http://16.170.226.171:5001"] 
 }))
 
 //parser
