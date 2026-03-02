@@ -5,6 +5,12 @@ import httpStatus from "http-status";
 import router from "./app/routes";
 import { globalErrorHandler } from "./app/middleware/globalErrorHandler";
 import cookieParser from "cookie-parser";
+import fs from "fs";
+
+export const httpsOptions = {
+  key: fs.readFileSync("./16.170.226.171-key.pem"),
+  cert: fs.readFileSync("./16.170.226.171.pem"),
+};
 
 const app: Application = express();
 app.use(
