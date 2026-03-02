@@ -4,6 +4,7 @@ import path from "path";
 import httpStatus from 'http-status'
 import router from "./app/routes";
 import { globalErrorHandler } from "./app/middleware/globalErrorHandler";
+import cookieParser from 'cookie-parser'
 
 
 const app: Application = express();
@@ -15,6 +16,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(process.cwd(), "public")));
+app.use(cookieParser())
 
 app.get("/", (req: Request, res: Response) => {
   res.send('Dxvid Music server is running.........');
