@@ -1,41 +1,27 @@
-import multer, { FileFilterCallback } from 'multer';
-import { Request } from 'express';
-import path from 'path';
-import { v4 as uuidv4 } from "uuid";
+import multer, { FileFilterCallback } from "multer";
+import { Request } from "express";
+import path from "path";
 
-
-// // Configure multer for memory storage
-// export const upload = multer({
-//     storage: multer.memoryStorage(),
-//     limits: {
-//       fileSize: 5 * 1024 * 1024, // 5MB limit
-//     },
-//     fileFilter(req: Request, file: Express.Multer.File, cb: FileFilterCallback) {
-//       cb(null, true);
-//     }
-//   });
-
+// Configure disk storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(process.cwd(), "public", "uploads"));
   },
-  filename: function (req, file, cb) {
-
+  filename: async function (req, file, cb) {
+    // Dynamically import uuid to avoid ERR_REQUIRE_ESM
+    const { v4: uuidv4 } = await import("uuid");
     const ext = path.extname(file.originalname);
-    // const baseName = path.basename(file.originalname, ext);
     cb(null, `${uuidv4()}${ext}`);
   },
 });
 
+// Export multer instance
 export const upload = multer({
-  // storage: multer.memoryStorage(),
   storage,
   limits: {
-    // fileSize: 250 * 1024 * 1024, // ২৫০MB = 250 * 1024 * 1024 bytes
-    fileSize: 10 * 1024 * 1024, // 10MB limit
+    fileSize: 10 * 1024 * 1024, // 10MB
   },
-
   fileFilter(req: Request, file: Express.Multer.File, cb: FileFilterCallback) {
     cb(null, true);
-  }
+  },
 });
