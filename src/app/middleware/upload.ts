@@ -1,19 +1,11 @@
 import multer, { FileFilterCallback } from 'multer';
 import { Request } from 'express';
 import path from 'path';
-import crypto from 'crypto';
+const { customAlphabet } = require("nanoid");
 
 
-// // Configure multer for memory storage
-// export const upload = multer({
-//     storage: multer.memoryStorage(),
-//     limits: {
-//       fileSize: 5 * 1024 * 1024, // 5MB limit
-//     },
-//     fileFilter(req: Request, file: Express.Multer.File, cb: FileFilterCallback) {
-//       cb(null, true);
-//     }
-//   });
+const nanoid = customAlphabet("0123456789abcdefghijklmnopqrstuvwxyz", 16);
+
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -22,8 +14,8 @@ const storage = multer.diskStorage({
   filename: function (req, file, cb) {
 
     const ext = path.extname(file.originalname);
-    // const baseName = path.basename(file.originalname, ext);
-    cb(null, `${crypto.randomUUID()}${ext}`);
+
+    cb(null, `${nanoid()}${ext}`);
   },
 });
 
