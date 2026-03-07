@@ -43,7 +43,7 @@ const seedAdmin = async () => {
       return;
     }
   } catch (error) {
-    console.error("Error seeding  Admin:", error);
+    console.error("Error seeding  Admin:");
   }
 };
 
