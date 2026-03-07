@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
 import config from "../../config";
-import {  Secret } from "jsonwebtoken";
+import { Secret } from "jsonwebtoken";
 import { prisma } from "../utils/prisma";
 import { AppError } from "../error";
 import { verifyToken } from "../utils/verifyToken";
@@ -15,8 +15,8 @@ export const checkAuth =
     next: NextFunction,
   ) => {
     try {
-      const token = req.headers.authorization;
-
+      const token = req?.cookies?.accessToken || req?.headers?.authorization;
+      console.log(token);
       if (!token) {
         throw new AppError(httpStatus.BAD_REQUEST, "Token is required");
       }
@@ -37,7 +37,7 @@ export const checkAuth =
       }
 
       req.user = verifyUserToken;
-      
+
       if (roles.length && !roles.includes(verifyUserToken.role)) {
         throw new AppError(
           httpStatus.BAD_REQUEST,
