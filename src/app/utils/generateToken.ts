@@ -13,7 +13,7 @@ export const generateToken = async (user: Partial<Prisma.UserCreateInput>) => {
     const token = await jwt.sign(
       payload,
       config.jwt.access_secret as Secret,
-      { expiresIn: config.jwt.access_expires_in } as SignOptions,
+      { expiresIn: config.jwt.access_expires_in || "1d" } as SignOptions,
     );
     return token;
   } catch (error) {

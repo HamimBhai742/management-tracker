@@ -14,7 +14,11 @@ router.post(
   projectController.createProject,
 );
 
+router.get("/stats", checkAuth(Role.USER), projectController.stats);
+
 router.get("/all", checkAuth(Role.USER), projectController.getAllProjects);
+
+router.get("/:id", checkAuth(Role.USER), projectController.getSingleProject);
 
 router.put(
   "/update/:id",
@@ -22,5 +26,12 @@ router.put(
   validateRequest(UpdateProjectSchema),
   projectController.updateProject,
 );
+
+router.delete(
+  "/delete/:id",
+  checkAuth(Role.USER),
+  projectController.deleteProject,
+);
+
 
 export const projectRoutes = router;

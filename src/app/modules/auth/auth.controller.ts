@@ -7,6 +7,7 @@ import { IJwtPayload } from "../../interface/user.interface";
 
 const login = catchAsyncFn(async (req: Request, res: Response) => {
   const user = await authService.login(req.body.email, req.body.password);
+
   sendResponse(res, {
     success: true,
     message: "User logged in successfully",

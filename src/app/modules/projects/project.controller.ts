@@ -33,6 +33,21 @@ const getAllProjects = catchAsyncFn(
   },
 );
 
+const getSingleProject = catchAsyncFn(
+  async (req: Request & { user?: IJwtPayload }, res: Response) => {
+    const project = await projectService.getSingleProject(
+      req.params.id as string,
+      req?.user?.userId as string,
+    );
+    sendResponse(res, {
+      success: true,
+      message: "Project fetched successfully",
+      statusCode: httpStatus.OK,
+      data: project,
+    });
+  },
+);
+
 const updateProject = catchAsyncFn(
   async (req: Request & { user?: IJwtPayload }, res: Response) => {
     const { userId } = req.user as IJwtPayload;
@@ -51,4 +66,37 @@ const updateProject = catchAsyncFn(
   },
 );
 
-export const projectController = { createProject, getAllProjects, updateProject };
+const deleteProject = catchAsyncFn(
+  async (req: Request & { user?: IJwtPayload }, res: Response) => {
+    await projectService.deleteProject(
+      req.params.id as string,
+      req?.user?.userId as string,
+    );
+
+    sendResponse(res, {
+      success: true,
+      message: "Project deleted successfully",
+      statusCode: httpStatus.OK,
+      data: null,
+    });
+  },
+);
+
+const stats = catchAsyncFn(async (req: Request & { user?: IJwtPayload }, res: Response) => {
+  const stats = await projectService.stats(req?.user?.userId as string);
+  sendResponse(res, {
+    success: true,
+    message: "Stats fetched successfully",
+    statusCode: httpStatus.OK,
+    data: stats,
+  });
+});
+
+export const projectController = {
+  createProject,
+  getAllProjects,
+  getSingleProject,
+  updateProject,
+  deleteProject,
+  stats,
+};
