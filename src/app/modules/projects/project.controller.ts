@@ -4,6 +4,7 @@ import { projectService } from "./project.service";
 import { IJwtPayload } from "../../interface/user.interface";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status";
+import { excludeFiled } from "./projects.constain";
 
 const createProject = catchAsyncFn(
   async (req: Request & { user?: IJwtPayload }, res: Response) => {
@@ -22,7 +23,25 @@ const createProject = catchAsyncFn(
 const getAllProjects = catchAsyncFn(
   async (req: Request & { user?: IJwtPayload }, res: Response) => {
     const { userId } = req.user as IJwtPayload;
-    const projects = await projectService.getAllProjects(userId);
+    const sortBy = req.query.sortBy || "createdAt";
+    const sortOrder = req.query.sortOrder || "desc";
+    const search = req.query.search || "";
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const filter = req.query || "";
+
+    for (const f of excludeFiled) {
+      delete filter[f];
+    }
+    const projects = await projectService.getAllProjects(
+      userId,
+      filter,
+      page,
+      limit,
+      search as string,
+      sortBy as string,
+      sortOrder as "asc" | "desc",
+    );
 
     sendResponse(res, {
       success: true,
@@ -82,15 +101,17 @@ const deleteProject = catchAsyncFn(
   },
 );
 
-const stats = catchAsyncFn(async (req: Request & { user?: IJwtPayload }, res: Response) => {
-  const stats = await projectService.stats(req?.user?.userId as string);
-  sendResponse(res, {
-    success: true,
-    message: "Stats fetched successfully",
-    statusCode: httpStatus.OK,
-    data: stats,
-  });
-});
+const stats = catchAsyncFn(
+  async (req: Request & { user?: IJwtPayload }, res: Response) => {
+    const stats = await projectService.stats(req?.user?.userId as string);
+    sendResponse(res, {
+      success: true,
+      message: "Stats fetched successfully",
+      statusCode: httpStatus.OK,
+      data: stats,
+    });
+  },
+);
 
 export const projectController = {
   createProject,

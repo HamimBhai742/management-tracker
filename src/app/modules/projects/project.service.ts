@@ -21,11 +21,63 @@ const createNewProject = async (
   return project;
 };
 
-const getAllProjects = async (userId: string) => {
+const getAllProjects = async (
+  userId: string,
+  filter: any,
+  page: number,
+  limit: number,
+  search: string,
+  sortBy: string,
+  sortOrder: "asc" | "desc",
+) => {
+  const where: any = {
+    AND: [
+      search && {
+        OR: [
+          {
+            title: {
+              contains: search,
+              mode: "insensitive",
+            },
+          },
+          {
+            description: {
+              contains: search,
+              mode: "insensitive",
+            },
+          },
+        ],
+      },
+      filter && filter,
+      userId && { user: { id: userId } },
+    ].filter(Boolean),
+  };
+
   const projects = await prisma.project.findMany({
-    where: { user: { id: userId } },
+    where,
+    skip: (page - 1) * limit,
+    take: limit,
+    orderBy: {
+      [sortBy]: sortOrder,
+    },
   });
-  return projects;
+
+  const total = await prisma.project.count({
+    where,
+  });
+
+  const totalPages = Math.ceil(total / limit);
+
+  const metaData = {
+    total,
+    pages: totalPages,
+    limit,
+    totalPages,
+  };
+  return {
+    projects,
+    metaData,
+  };
 };
 
 const getSingleProject = async (id: string, userId: string) => {
