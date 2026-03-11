@@ -33,6 +33,7 @@ const getAllProjects = catchAsyncFn(
     for (const f of excludeFiled) {
       delete filter[f];
     }
+    
     const projects = await projectService.getAllProjects(
       userId,
       filter,
